@@ -27,7 +27,7 @@ void help();
 
 void STinit(link*);
 int STcount(link);
-Item STsearch(link,Key);
+Directory STsearch(link,Key);
 void STinsert(link*,Item);
 void STdelete(link*,Key);
 void STsort(link,void (*visit)(Item));
