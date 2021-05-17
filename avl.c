@@ -1,14 +1,27 @@
 #include "header.h"
+	
+/* maybe it doesnt have any arguments */
 
-struct STnode { Item item; link l, r; int height};
-
-link NEW(Item item, link l, link r) {
-	link x = (link)malloc(sizeof(struct STnode));
-	x->item = item;
+	/* AVL for alphabetical order */
+link NEW(Directory* dir, link l, link r) {
+	link x = malloc_link();
+	x->dir = dir;
 	x->l = l;
 	x->r = r;
 	x->height=1;
 	return x;
+}
+
+link searchR(link h, char* v) {
+	if (h == NULL)
+		return NULL;
+	if (!strcmp(v, h->dir->path))
+		return h;
+	if (strcmp(v, h->dir->path) < 0)
+		return STsearch(h->l, v);
+	else
+		return STsearch(h->r, v);
+	}
 }
 
 int height(link h){
@@ -22,11 +35,10 @@ link rotL(link h) {
 	link x = h->r;
 	h->r = x->l;
 	x->l = h;
-
+	
 	height_left = height(h->l); height_right = height(h->r);
 	h->height = height_left > height_right ? height_left + 1 :
 		height_right + 1;
-	
 	height_left = height(x->l); height_right = height(x->r);
 	x->height = height_left > height_right ? height_left + 1 :
 		height_right + 1;
@@ -54,7 +66,7 @@ void update_height(link h) {
 	int height_right = height(h->r);
 	h->height = height_left >
 	height_right ? height_left + 1 :
-	height_right + 1;
+		height_right + 1;
 }
 
 link rotLR(link h) { /*rotação dupla esquerda direita*/
@@ -62,7 +74,8 @@ link rotLR(link h) { /*rotação dupla esquerda direita*/
 	h->l=rotL(h->l);
 	return rotR(h);
 }
-link rotRL(link h) { /*rotação dupla direita esquerda*/
+
+link rotRL(link h) { /*rotacao dupla direita esquerda*/
 	if (h==NULL) return h;
 	h->r=rotR(h->r);
 	return rotL(h);
@@ -89,22 +102,21 @@ link AVLbalance(link h) {
 	return h;
 }
 
-link insertR(link h, Item item)
-{
+link insertR(link h, Directory* dir) {
 	if (h == NULL)
-		return NEW(item, NULL, NULL);
-	if (less(key(item), key(h->item)))
-		h->l = insertR(h->l, item);
+		return NEW(dir, NULL, NULL);
+	if (strcmp(dir->path, h->dir->path) < 0)
+		h->l = insertR(h->l, dir);
 	else
-		h->r = insertR(h->r, item);
+		h->r = insertR(h->r, dir);
 	h=AVLbalance(h);
 	return h;
 }
-
+/* tenho de fazer isto depois*/
 link deleteR(link h, Key k) {
 	if (h==NULL) return h;
 	else if (less(k, key(h->item))) h->l=deleteR(h->l,k);
-	else if (less(key(h->item), k)) h->r=deleteR(h->r,k) ;
+	else if (less(key(h->item), k)) h->r=deleteR(h->r,k);
 	else {
 		if (h->l !=NULL && h->r !=NULL){
 			link aux=max(h->l);
