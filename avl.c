@@ -18,10 +18,9 @@ link searchR(link h, char* v) {
 	if (!strcmp(v, h->dir->path))
 		return h;
 	if (strcmp(v, h->dir->path) < 0)
-		return STsearch(h->l, v);
+		return searchR(h->l, v);
 	else
-		return STsearch(h->r, v);
-	}
+		return searchR(h->r, v);
 }
 
 int height(link h){
@@ -112,7 +111,7 @@ link insertR(link h, Directory* dir) {
 	h=AVLbalance(h);
 	return h;
 }
-/* tenho de fazer isto depois*/
+/* tenho de fazer isto depois
 link deleteR(link h, Key k) {
 	if (h==NULL) return h;
 	else if (less(k, key(h->item))) h->l=deleteR(h->l,k);
@@ -133,4 +132,4 @@ link deleteR(link h, Key k) {
 	}
 	h=AVLbalance(h);
 	return h;
-}
+}*/

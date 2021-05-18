@@ -42,12 +42,13 @@ void set(link, char*, char*);
 char* readDir(char*);
 char* malloc_char(char*);
 link malloc_link();
+Directory* malloc_dir();
 char* strdup(char*);
 
 void initR(link*);
-/*int STcount(link);*/
 link searchR(link, char*);
-void insertR(link*, Directory*);
+link insertR(link, Directory*);
+/*int STcount(link);*/
 /* void deleteR(link*, Key); fazer isto depois*/
 /*void STsort(link,void (*visit)(Item));*/
 /*void STfree(link*);*/
