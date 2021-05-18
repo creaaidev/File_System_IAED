@@ -31,7 +31,7 @@ int main() {
 
 				token = strtok(NULL," \n");
 				dir = strtok(path, "/\n");
-				set(root, path, value);
+				set(root, dir, token);
 				break;
 		}
 	}
