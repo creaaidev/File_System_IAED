@@ -1,9 +1,7 @@
 #include "header.h"
 	
-/* maybe it doesnt have any arguments */
-
 	/* AVL for alphabetical order */
-link NEW(Directory* dir, link l, link r) {
+link NEW(dir3 dir, link l, link r) {
 	link x = malloc_link();
 	x->dir = dir;
 	x->l = l;
@@ -101,17 +99,18 @@ link AVLbalance(link h) {
 	return h;
 }
 
-link insertR(link h, Directory* dir) {
+link insertR(link h, dir3 directory) {
 	if (h == NULL)
-		return NEW(dir, NULL, NULL);
-	if (strcmp(dir->path, h->dir->path) < 0)
-		h->l = insertR(h->l, dir);
+		return NEW(directory, NULL, NULL);
+	if (strcmp(directory->path, h->dir->path) < 0)
+		h->l = insertR(h->l, directory);
 	else
-		h->r = insertR(h->r, dir);
+		h->r = insertR(h->r, directory);
 	h=AVLbalance(h);
 	return h;
 }
-/* tenho de fazer isto depois
+
+	/* tenho de fazer isto depois
 link deleteR(link h, Key k) {
 	if (h==NULL) return h;
 	else if (less(k, key(h->item))) h->l=deleteR(h->l,k);

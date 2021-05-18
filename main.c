@@ -5,18 +5,18 @@ int main() {
 	int i, terminate=0;
 	char cmd_n[CMD_COUNT][10] = {{"help"},{"quit"},{"set"},{"print"},{"list"},
 				       {"search"},{"delete"}};
-	char input[MAX_INPUT_SIZE];
-	char* dir;
-	char* path;
+	char command[MAX_INPUT_SIZE];
+	char path[MAX_INPUT_SIZE];
+	char value[MAX_INPUT_SIZE];
 	char* token;
-	link root = NULL;
+	link root = malloc_link();
+	root = NEW(malloc_dir(""), NULL, NULL);
 
 	while (!terminate) {
-		fgets(input, MAX_INPUT_SIZE, stdin);
-		token = strtok(input," \n");
+		scanf("%s",command);
 		
 		for (i=0; i<CMD_COUNT; i++) {
-			if (!strcmp(token, cmd_n[i])) {
+			if (!strcmp(command, cmd_n[i])) {
 				break;
 			}
 		}
@@ -25,13 +25,9 @@ int main() {
 				help();
 				break;
 			case 2:
-				token = strtok(NULL," \n");
-				path = token;
-				dir = (char*)malloc(sizeof(char)*strlen(path));
-
-				token = strtok(NULL," \n");
-				dir = strtok(path, "/\n");
-				set(root, dir, token);
+				scanf(" %s %[^\n]", path, value);
+				token = strtok(path,"/\n");
+				set(root, token, value);
 				break;
 		}
 	}

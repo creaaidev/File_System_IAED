@@ -7,36 +7,39 @@
 /* Defines */
 #define NAME 2
 #define ORDER 3
-#define HELP "help: Imprime todos os comandos disponiveis."
-#define QUIT "quit: Termina o programa."
-#define SET "set: Adiciona ou modifica o valor a armazenar."
-#define PRINT "print: Imprime todos os caminhos e valores."
-#define FIND "find: Imprime o valor armazenado."
-#define LIST "list: Lista todos os componentes imediatos de um sub-caminho."
-#define SEARCH "search: Procura o caminho dado um valor."
-#define DELETE "delete: Apaga um caminho e todos os subcaminhos."
+#define HELP "help: Imprime todos os comandos disponiveis.\n"
+#define QUIT "quit: Termina o programa.\n"
+#define SET "set: Adiciona ou modifica o valor a armazenar.\n"
+#define PRINT "print: Imprime todos os caminhos e valores.\n"
+#define FIND "find: Imprime o valor armazenado.\n"
+#define LIST "list: Lista todos os componentes imediatos de um sub-caminho.\n"
+#define SEARCH "search: Procura o caminho dado um valor.\n"
+#define DELETE "delete: Apaga um caminho e todos os subcaminhos.\n"
 #define CMD_COUNT 8
 #define MAX_INPUT_SIZE 66536
 
 /* Typedefs and structs */
-typedef struct {
-	Directory* curr;
-	LinkedList* next;
-} LLnode;
-
-	/* structs for AVL tree */
+typedef struct Directory* dir3;
 typedef struct STnode* link; 
+typedef struct LinkedList* llnode;
+
+struct LinkedList{
+	dir3 curr;
+	llnode next;
+};
+	
+/* structs for AVL tree */
 
 /* directory struct */
-typedef struct {
+struct Directory {
 	char* path;
 	char* value;
-	LLnode* first;
-	LLnode* last;
-} Directory;
+	llnode first;
+	llnode last;
+};
 
 struct STnode {
-	Directory* dir; /* node's directory */
+	dir3 dir; /* node's directory */
 	link children; /* avl of children */
 	link l, r;
 	int height;
@@ -48,12 +51,14 @@ void set(link, char*, char*);
 char* readDir(char*);
 char* malloc_char(char*);
 link malloc_link();
-Directory* malloc_dir();
+dir3 malloc_dir(char*);
 char* strdup(char*);
+void insert_llist(dir3, dir3);
 
 void initR(link*);
+link NEW(dir3, link, link);
 link searchR(link, char*);
-link insertR(link, Directory*);
+link insertR(link, dir3);
 /*int STcount(link);*/
 /* void deleteR(link*, Key); fazer isto depois*/
 /*void STsort(link,void (*visit)(Item));*/
