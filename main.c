@@ -3,14 +3,14 @@
 
 int main() {
 	int i, terminate=0;
-	char cmd_n[CMD_COUNT][10] = {{"help"},{"quit"},{"set"},{"print"},{"list"},
+	char cmd_n[CMD_COUNT][10] = {{"help"},{"quit"},{"set"},{"print"},{"find"},{"list"},
 				       {"search"},{"delete"}};
 	char command[MAX_INPUT_SIZE];
 	char path[MAX_INPUT_SIZE];
 	char value[MAX_INPUT_SIZE];
 	char* token;
-	link root = NEW(malloc_dir(""), NULL, NULL);
-	root->children = NULL;
+	static link root;
+	root = NEW(malloc_dir(""), NULL, NULL);
 
 	while (!terminate) {
 		scanf("%s",command);
@@ -20,6 +20,10 @@ int main() {
 				break;
 			}
 		}
+		/* REMOVE BEFORE SHIPMENT */
+		if (!strcmp(command, "debug")) {
+				i = -1;
+		}
 		switch (i) {
 			case 0:
 				help();
@@ -28,6 +32,17 @@ int main() {
 				scanf(" %s %[^\n]", path, value);
 				token = strtok(path,"/\n");
 				set(root->children, root, token, value);
+				break;
+			case 3:
+				print(root->dir);
+				break;
+			case 4:
+				scanf(" %s", path);
+				token = strtok(path, "/\n");
+				find(root->children, token);
+				break;
+			case -1:
+				debug(root->dir, root->children);
 				break;
 		}
 	}

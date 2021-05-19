@@ -24,7 +24,7 @@ typedef struct STnode* link;
 typedef struct LinkedList* llnode;
 
 struct LinkedList{
-	dir3 curr;
+	dir3 dir;
 	llnode next;
 };
 	
@@ -54,6 +54,9 @@ link malloc_link();
 dir3 malloc_dir(char*);
 char* strdup(char*);
 void insert_llist(dir3, dir3);
+void print(dir3);
+void find(link, char*);
+void debug(dir3, link);
 
 void initR(link*);
 link NEW(dir3, link, link);

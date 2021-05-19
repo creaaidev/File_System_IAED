@@ -1,6 +1,8 @@
 #include "header.h"
 	
 	/* AVL for alphabetical order */
+/*---------------------------------------------------------------*/
+/*Cria o node, coloca o left, right e height, atribui o directory*/
 link NEW(dir3 dir, link l, link r) {
 	link x = malloc_link();
 	x->dir = dir;
@@ -15,7 +17,7 @@ link searchR(link h, char* v) {
 		return NULL;
 	if (!strcmp(v, h->dir->path))
 		return h;
-	if (strcmp(v, h->dir->path) < 0)
+	if (strcmp(v, h->dir->path) < 0) /* <0 v first */
 		return searchR(h->l, v);
 	else
 		return searchR(h->r, v);
