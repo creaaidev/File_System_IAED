@@ -9,8 +9,8 @@ int main() {
 	char path[MAX_INPUT_SIZE];
 	char value[MAX_INPUT_SIZE];
 	char* token;
-	link root = malloc_link();
-	root = NEW(malloc_dir(""), NULL, NULL);
+	link root = NEW(malloc_dir(""), NULL, NULL);
+	root->children = NULL;
 
 	while (!terminate) {
 		scanf("%s",command);
@@ -27,7 +27,7 @@ int main() {
 			case 2:
 				scanf(" %s %[^\n]", path, value);
 				token = strtok(path,"/\n");
-				set(root, token, value);
+				set(root->children, root, token, value);
 				break;
 		}
 	}

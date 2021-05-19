@@ -47,7 +47,7 @@ struct STnode {
 
 /* Prototypes */
 void help();
-void set(link, char*, char*);
+void set(link, link, char*, char*);
 char* readDir(char*);
 char* malloc_char(char*);
 link malloc_link();
