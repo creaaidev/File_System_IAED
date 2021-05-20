@@ -9,8 +9,7 @@ int main() {
 	char path[MAX_INPUT_SIZE];
 	char value[MAX_INPUT_SIZE];
 	char* token;
-	static link root;
-	root = NEW(malloc_dir(""), NULL, NULL);
+	dir3 root = malloc_dir("");
 
 	while (!terminate) {
 		scanf("%s",command);
@@ -31,18 +30,21 @@ int main() {
 			case 2:
 				scanf(" %s %[^\n]", path, value);
 				token = strtok(path,"/\n");
-				set(root->children, root, token, value);
+				root->children = set(root->children, root, token, value);
 				break;
 			case 3:
-				print(root->dir);
+				print(root, root->path);
 				break;
 			case 4:
 				scanf(" %s", path);
 				token = strtok(path, "/\n");
 				find(root->children, token);
 				break;
+			
 			case -1:
-				debug(root->dir, root->children);
+				/*scanf(" %s %[^\n]", path, value);
+				token = strtok(path, "/\n");
+				root->children = debug(root->children, root, token, value);*/
 				break;
 		}
 	}

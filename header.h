@@ -36,27 +36,27 @@ struct Directory {
 	char* value;
 	llnode first;
 	llnode last;
+	link children; /* avl of children */
 };
 
 struct STnode {
 	dir3 dir; /* node's directory */
-	link children; /* avl of children */
 	link l, r;
 	int height;
 };
 
 /* Prototypes */
 void help();
-void set(link, link, char*, char*);
+link set(link, dir3, char*, char*);
 char* readDir(char*);
 char* malloc_char(char*);
 link malloc_link();
 dir3 malloc_dir(char*);
 char* strdup(char*);
 void insert_llist(dir3, dir3);
-void print(dir3);
+void print(dir3, char*);
 void find(link, char*);
-void debug(dir3, link);
+/*link debug(link, link, char*, char*);*/
 
 void initR(link*);
 link NEW(dir3, link, link);
