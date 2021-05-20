@@ -1,6 +1,21 @@
 #include "header.h"
 	
-	/* AVL for alphabetical order */
+void traverse(link node, char* full) {
+	if (node == NULL)
+		return;
+	traverse(node->l, full);
+	visit(node->dir, full);
+	traverse(node->r, full);
+}
+
+void visit(dir3 dir, char* full) {
+	char* full_path = (char*)malloc(sizeof(char)*(strlen(dir->path)+strlen(full))+2);
+	strcpy(full_path, full);
+	strcat(full_path, "/");
+	strcat(full_path, dir->path);
+	printf("%s\n", full_path);
+}
+
 /*---------------------------------------------------------------*/
 /*Cria o node, coloca o left, right e height, atribui o directory*/
 link NEW(dir3 dir, link l, link r) {

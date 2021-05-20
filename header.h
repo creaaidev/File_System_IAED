@@ -55,10 +55,12 @@ dir3 malloc_dir(char*);
 char* strdup(char*);
 void insert_llist(dir3, dir3);
 void print(dir3, char*);
-void find(link, char*);
-/*link debug(link, link, char*, char*);*/
+void find(link, dir3, char*);
+void list(link, char*, char*);
+int search(dir3, char*, char*);
 
-void initR(link*);
+void traverse(link, char*);
+void visit(dir3, char*);
 link NEW(dir3, link, link);
 link searchR(link, char*);
 link insertR(link, dir3);

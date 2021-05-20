@@ -27,9 +27,12 @@ int main() {
 			case 0:
 				help();
 				break;
+			case 1:
+				terminate = 1;
+				break;
 			case 2:
 				scanf(" %s %[^\n]", path, value);
-				token = strtok(path,"/\n");
+				token = strtok(path,"/");
 				root->children = set(root->children, root, token, value);
 				break;
 			case 3:
@@ -37,15 +40,31 @@ int main() {
 				break;
 			case 4:
 				scanf(" %s", path);
-				token = strtok(path, "/\n");
-				find(root->children, token);
+				token = strtok(path, "/");
+				find(root->children, root, token);
 				break;
-			
-			case -1:
-				/*scanf(" %s %[^\n]", path, value);
-				token = strtok(path, "/\n");
-				root->children = debug(root->children, root, token, value);*/
+			case 5:
+				if (getchar()!='\n') {
+					scanf("%s", path);
+					token = strtok(path, "/");
+					list(root->children, token, path);
+				} else {
+					list(root->children, NULL, "");
+				}
 				break;
+			case 6:
+				scanf(" %[^\n]", value);
+				if (search(root, root->path, value) == 0)
+					printf("not found\n");
+				break;
+			case 7:
+				if (getchar()!='\n') {
+					scanf("%s", path);
+					token = strtok(path, "/");
+					delete(root->children, token);
+				} else {
+					delete(root->children, NULL);
+				}
 		}
 	}
 	return 0;
