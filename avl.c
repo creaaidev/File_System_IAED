@@ -133,13 +133,14 @@ link max(link h) {
 	else
 		return max(h->r);
 }
-
+				
 void linked_target_delete(dir3 parent, char* path) {
 	llnode aux = parent->first;
 	llnode bye = NULL;
-	if (!strcmp(aux->dir->path, path)) {
-		if (parent->first != parent->last)
-			parent->first = aux->next;
+	if (aux != NULL && !strcmp(aux->dir->path, path)) {
+		if (parent->first == parent->last)
+			parent->last = NULL;
+		parent->first = parent->first->next;
 		free(aux);
 		return;
 	}
