@@ -9,7 +9,7 @@ int main() {
 	char path[MAX_INPUT_SIZE];
 	char value[MAX_INPUT_SIZE];
 	char* token;
-	dir3 root = malloc_dir("");
+	dir3 root = malloc_dir("", NULL);
 
 	while (!terminate) {
 		scanf("%s",command);
@@ -57,14 +57,14 @@ int main() {
 				if (search(root, root->path, value) == 0)
 					printf("not found\n");
 				break;
-			/*case 7:*/
-				/*if (getchar()!='\n') {
+			case 7:
+				if (getchar()!='\n') {
 					scanf("%s", path);
 					token = strtok(path, "/");
-					delete(root->children, token);
+					search_return(root->children, root, token);
 				} else {
-					delete(root->children, NULL);
-				}*/
+					search_return(root->children, root, NULL);
+				}
 		}
 	}
 	return 0;

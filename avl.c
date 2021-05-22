@@ -127,38 +127,73 @@ link insertR(link h, dir3 directory) {
 	return h;
 }
 
-/*
-link deleteR(link child, char* token) {
-	if (h==NULL)
-		return h;
-	else if (strcmp(token, child->dir->path))
-		child->l=deleteR(child->l, token);
-	else if (strcmp(child->dir->path, token))
-		child->r=deleteR(child->r, token);
-	else {
-		if (child->l != NULL && child->r != NULL){
-			link aux = max(h->l);
-			{dir3 x; x = child->dir; child->dir = aux->dir; aux->dir = x;}
-			child->l = deleteR(child->l, child-> key(aux->item));
-		} else {
-			link aux = child;
-			if (child->l == NULL && child->r == NULL)
-				child = NULL;
-			else if (child->l == NULL)
-				child = child->r;
-			else 
-				child = child->l;
-			deleteItem(aux->dir);
-			free(aux);
-		}
-	}
-	h=AVLbalance(h);
-	return h;
-}
-
 link max(link h) {
 	if (h == NULL || h->r == NULL)
 		return h;
 	else
 		return max(h->r);
-}*/
+}
+
+void linked_target_delete(dir3 parent, char* path) {
+	llnode aux = parent->first;
+	llnode bye = NULL;
+	if (!strcmp(aux->dir->path, path)) {
+		if (parent->first != parent->last)
+			parent->first = aux->next;
+		free(aux);
+		return;
+	}
+	while (aux != NULL) {
+		if (aux != parent->last) {
+			if (!strcmp(aux->next->dir->path, path)) {
+				bye = aux->next;
+				aux->next = aux->next->next;
+				if (bye == parent->last)
+					parent->last = aux->next;
+				free(bye);
+				return;
+			}
+		} else {
+			if (!strcmp(aux->dir->path, path)) {
+				bye = aux;
+				if (aux == parent->first) {
+					parent->first = NULL;
+				}
+				parent->last = NULL;
+				free(bye);
+				return;
+			}
+		}
+		aux = aux->next;
+	}
+}
+
+link deleteR(link h, char* path) {
+	if (h == NULL)
+		return h;
+	else if (strcmp(path, h->dir->path) < 0)
+		h->l = deleteR(h->l, path);
+	else if (strcmp(h->dir->path, path) < 0)
+		h->r = deleteR(h->r, path);
+	else {
+		if (h->l != NULL && h->r != NULL) {
+			link aux = max(h->l);
+			{dir3 x; x = h->dir; h->dir = aux->dir; aux->dir = x;}
+			h->l = deleteR(h->l, aux->dir->path);
+		}
+		else {
+			link aux = h;
+			if (h->l == NULL && h->r == NULL)
+				h = NULL;
+			else if (h->l == NULL)
+				h = h->r;
+			else 
+				h = h->l;
+			linked_target_delete(aux->dir->parent, aux->dir->path); 
+			clear_dir(aux->dir);
+			free(aux);
+		}
+	}
+	h = AVLbalance(h);
+	return h;
+}
