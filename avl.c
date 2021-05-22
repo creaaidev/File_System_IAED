@@ -1,19 +1,19 @@
 #include "header.h"
 	
-void traverse(link node, char* full) {
+void traverse(link node/*, char* full*/) {
 	if (node == NULL)
 		return;
-	traverse(node->l, full);
-	visit(node->dir, full);
-	traverse(node->r, full);
+	traverse(node->l/*, full*/);
+	visit(node->dir/*, full*/);
+	traverse(node->r/*, full*/);
 }
 
-void visit(dir3 dir, char* full) {
-	char* full_path = (char*)malloc(sizeof(char)*(strlen(dir->path)+strlen(full))+2);
+void visit(dir3 dir/*, char* full*/) {
+	/*char* full_path = (char*)malloc(sizeof(char)*(strlen(dir->path)+strlen(full))+2);
 	strcpy(full_path, full);
 	strcat(full_path, "/");
-	strcat(full_path, dir->path);
-	printf("%s\n", full_path);
+	strcat(full_path, dir->path);*/
+	printf("%s\n", dir->path);
 }
 
 /*---------------------------------------------------------------*/
@@ -127,25 +127,38 @@ link insertR(link h, dir3 directory) {
 	return h;
 }
 
-	/* tenho de fazer isto depois
-link deleteR(link h, Key k) {
-	if (h==NULL) return h;
-	else if (less(k, key(h->item))) h->l=deleteR(h->l,k);
-	else if (less(key(h->item), k)) h->r=deleteR(h->r,k);
+/*
+link deleteR(link child, char* token) {
+	if (h==NULL)
+		return h;
+	else if (strcmp(token, child->dir->path))
+		child->l=deleteR(child->l, token);
+	else if (strcmp(child->dir->path, token))
+		child->r=deleteR(child->r, token);
 	else {
-		if (h->l !=NULL && h->r !=NULL){
-			link aux=max(h->l);
-			{Item x; x=h->item; h->item=aux->item; aux->item=x;}
-			h->l= deleteR(h->l, key(aux->item));
+		if (child->l != NULL && child->r != NULL){
+			link aux = max(h->l);
+			{dir3 x; x = child->dir; child->dir = aux->dir; aux->dir = x;}
+			child->l = deleteR(child->l, child-> key(aux->item));
 		} else {
-			link aux=h;
-			if (h->l == NULL && h->r == NULL) h=NULL;
-			else if (h->l==NULL) h=h->r;
-			else h=h->l;
-			deleteItem(aux->item);
+			link aux = child;
+			if (child->l == NULL && child->r == NULL)
+				child = NULL;
+			else if (child->l == NULL)
+				child = child->r;
+			else 
+				child = child->l;
+			deleteItem(aux->dir);
 			free(aux);
 		}
 	}
 	h=AVLbalance(h);
 	return h;
+}
+
+link max(link h) {
+	if (h == NULL || h->r == NULL)
+		return h;
+	else
+		return max(h->r);
 }*/

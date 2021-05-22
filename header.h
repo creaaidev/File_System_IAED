@@ -7,7 +7,7 @@
 /* Defines */
 #define NAME 2
 #define ORDER 3
-#define HELP "help: Imprime todos os comandos disponiveis.\n"
+#define HELP "help: Imprime os comandos disponíveis.\n"
 #define QUIT "quit: Termina o programa.\n"
 #define SET "set: Adiciona ou modifica o valor a armazenar.\n"
 #define PRINT "print: Imprime todos os caminhos e valores.\n"
@@ -41,6 +41,7 @@ struct Directory {
 
 struct STnode {
 	dir3 dir; /* node's directory */
+	link parent;
 	link l, r;
 	int height;
 };
@@ -56,11 +57,11 @@ char* strdup(char*);
 void insert_llist(dir3, dir3);
 void print(dir3, char*);
 void find(link, dir3, char*);
-void list(link, char*, char*);
+void list(link, char* /*, char* */);
 int search(dir3, char*, char*);
 
-void traverse(link, char*);
-void visit(dir3, char*);
+void traverse(link /*, char* */);
+void visit(dir3 /*, char* */);
 link NEW(dir3, link, link);
 link searchR(link, char*);
 link insertR(link, dir3);

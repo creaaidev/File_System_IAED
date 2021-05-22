@@ -47,9 +47,9 @@ int main() {
 				if (getchar()!='\n') {
 					scanf("%s", path);
 					token = strtok(path, "/");
-					list(root->children, token, path);
+					list(root->children, token/*, path*/);
 				} else {
-					list(root->children, NULL, "");
+					list(root->children, NULL);
 				}
 				break;
 			case 6:
@@ -57,14 +57,14 @@ int main() {
 				if (search(root, root->path, value) == 0)
 					printf("not found\n");
 				break;
-			case 7:
-				if (getchar()!='\n') {
+			/*case 7:*/
+				/*if (getchar()!='\n') {
 					scanf("%s", path);
 					token = strtok(path, "/");
 					delete(root->children, token);
 				} else {
 					delete(root->children, NULL);
-				}
+				}*/
 		}
 	}
 	return 0;
