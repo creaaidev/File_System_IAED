@@ -19,16 +19,13 @@ int main() {
 				break;
 			}
 		}
-		/* REMOVE BEFORE SHIPMENT */
-		if (!strcmp(command, "debug")) {
-				i = -1;
-		}
 		switch (i) {
 			case 0:
 				help();
 				break;
 			case 1:
 				terminate = 1;
+				search_return(root->children, root, NULL);
 				break;
 			case 2:
 				scanf(" %s %[^\n]", path, value);
@@ -47,7 +44,7 @@ int main() {
 				if (getchar()!='\n') {
 					scanf("%s", path);
 					token = strtok(path, "/");
-					list(root->children, token/*, path*/);
+					list(root->children, token);
 				} else {
 					list(root->children, NULL);
 				}
@@ -64,6 +61,7 @@ int main() {
 					search_return(root->children, root, token);
 				} else {
 					search_return(root->children, root, NULL);
+					root = malloc_dir("", NULL);
 				}
 		}
 	}
