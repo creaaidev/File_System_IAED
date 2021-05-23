@@ -50,7 +50,7 @@ struct STnode {
 void help();
 link set(link, dir3, char*, char*);
 char* readDir(char*);
-char* malloc_char(char*);
+char* malloc_char(int);
 link malloc_link();
 dir3 malloc_dir(char*, dir3);
 char* strdup(char*);
@@ -60,6 +60,7 @@ void find(link, dir3, char*);
 void list(link, char*);
 int search(dir3, char*, char*);
 
+dir3 terminate(int signal);
 void search_return(link, dir3, char*);
 void clear_dir(dir3);
 void terminator(link);

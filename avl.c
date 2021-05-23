@@ -1,23 +1,18 @@
 #include "header.h"
-	
-void traverse(link node/*, char* full*/) {
+
+/* Traverse InOrder */
+void traverse(link node) {
 	if (node == NULL)
 		return;
-	traverse(node->l/*, full*/);
-	visit(node->dir/*, full*/);
-	traverse(node->r/*, full*/);
+	traverse(node->l);
+	visit(node->dir);
+	traverse(node->r);
 }
 
-void visit(dir3 dir/*, char* full*/) {
-	/*char* full_path = (char*)malloc(sizeof(char)*(strlen(dir->path)+strlen(full))+2);
-	strcpy(full_path, full);
-	strcat(full_path, "/");
-	strcat(full_path, dir->path);*/
+void visit(dir3 dir) {
 	printf("%s\n", dir->path);
 }
 
-/*---------------------------------------------------------------*/
-/*Cria o node, coloca o left, right e height, atribui o directory*/
 link NEW(dir3 dir, link l, link r) {
 	link x = malloc_link();
 	x->dir = dir;
@@ -83,19 +78,22 @@ void update_height(link h) {
 		height_right + 1;
 }
 
-link rotLR(link h) { /*rotação dupla esquerda direita*/
+/* Double Rotation Left Right */
+link rotLR(link h) {
 	if (h==NULL) return h;
 	h->l=rotL(h->l);
 	return rotR(h);
 }
 
-link rotRL(link h) { /*rotacao dupla direita esquerda*/
+/* Double Rotation Right Left */
+link rotRL(link h) {
 	if (h==NULL) return h;
 	h->r=rotR(h->r);
 	return rotL(h);
 }
 
-int Balance(link h) {/*Balance factor*/
+/* Balance Factor */
+int Balance(link h) {
 	if(h == NULL) return 0;
 	return height(h->l)-height(h->r);
 }
@@ -133,10 +131,12 @@ link max(link h) {
 	else
 		return max(h->r);
 }
-				
+
+/* Please understand that in order to avoid using Doubly Linked Lists I had to
+   keep this function relatively big so as to catch all the edge cases */
 void linked_target_delete(dir3 parent, char* path) {
 	llnode aux = parent->first;
-	llnode bye = NULL;
+	llnode bye = NULL; /*In case the first is the wanted dir*/
 	if (aux != NULL && !strcmp(aux->dir->path, path)) {
 		if (parent->first == parent->last)
 			parent->last = NULL;
@@ -168,7 +168,8 @@ void linked_target_delete(dir3 parent, char* path) {
 		aux = aux->next;
 	}
 }
-
+/* This function is from the teacher's mostly, I just changed specific parts
+   so as to work with my own code */
 link deleteR(link h, char* path) {
 	if (h == NULL)
 		return h;
