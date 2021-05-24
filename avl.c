@@ -1,23 +1,18 @@
 #include "header.h"
-	
-void traverse(link node, char* full) {
+
+/* Traverse InOrder */
+void traverse(link node) {
 	if (node == NULL)
 		return;
-	traverse(node->l, full);
-	visit(node->dir, full);
-	traverse(node->r, full);
+	traverse(node->l);
+	visit(node->dir);
+	traverse(node->r);
 }
 
-void visit(dir3 dir, char* full) {
-	char* full_path = (char*)malloc(sizeof(char)*(strlen(dir->path)+strlen(full))+2);
-	strcpy(full_path, full);
-	strcat(full_path, "/");
-	strcat(full_path, dir->path);
-	printf("%s\n", full_path);
+void visit(dir3 dir) {
+	printf("%s\n", dir->path);
 }
 
-/*---------------------------------------------------------------*/
-/*Cria o node, coloca o left, right e height, atribui o directory*/
 link NEW(dir3 dir, link l, link r) {
 	link x = malloc_link();
 	x->dir = dir;
@@ -83,19 +78,22 @@ void update_height(link h) {
 		height_right + 1;
 }
 
-link rotLR(link h) { /*rotação dupla esquerda direita*/
+/* Double Rotation Left Right */
+link rotLR(link h) {
 	if (h==NULL) return h;
 	h->l=rotL(h->l);
 	return rotR(h);
 }
 
-link rotRL(link h) { /*rotacao dupla direita esquerda*/
+/* Double Rotation Right Left */
+link rotRL(link h) {
 	if (h==NULL) return h;
 	h->r=rotR(h->r);
 	return rotL(h);
 }
 
-int Balance(link h) {/*Balance factor*/
+/* Balance Factor */
+int Balance(link h) {
 	if(h == NULL) return 0;
 	return height(h->l)-height(h->r);
 }
@@ -127,25 +125,77 @@ link insertR(link h, dir3 directory) {
 	return h;
 }
 
-	/* tenho de fazer isto depois
-link deleteR(link h, Key k) {
-	if (h==NULL) return h;
-	else if (less(k, key(h->item))) h->l=deleteR(h->l,k);
-	else if (less(key(h->item), k)) h->r=deleteR(h->r,k);
-	else {
-		if (h->l !=NULL && h->r !=NULL){
-			link aux=max(h->l);
-			{Item x; x=h->item; h->item=aux->item; aux->item=x;}
-			h->l= deleteR(h->l, key(aux->item));
+link max(link h) {
+	if (h == NULL || h->r == NULL)
+		return h;
+	else
+		return max(h->r);
+}
+
+/* Please understand that in order to avoid using Doubly Linked Lists I had to
+   keep this function relatively big so as to catch all the edge cases */
+void linked_target_delete(dir3 parent, char* path) {
+	llnode aux = parent->first;
+	llnode bye = NULL; /*In case the first is the wanted dir*/
+	if (aux != NULL && !strcmp(aux->dir->path, path)) {
+		if (parent->first == parent->last)
+			parent->last = NULL;
+		parent->first = parent->first->next;
+		free(aux);
+		return;
+	}
+	while (aux != NULL) {
+		if (aux != parent->last) {
+			if (!strcmp(aux->next->dir->path, path)) {
+				bye = aux->next;
+				aux->next = aux->next->next;
+				if (bye == parent->last)
+					parent->last = aux->next;
+				free(bye);
+				return;
+			}
 		} else {
-			link aux=h;
-			if (h->l == NULL && h->r == NULL) h=NULL;
-			else if (h->l==NULL) h=h->r;
-			else h=h->l;
-			deleteItem(aux->item);
+			if (!strcmp(aux->dir->path, path)) {
+				bye = aux;
+				if (aux == parent->first) {
+					parent->first = NULL;
+				}
+				parent->last = NULL;
+				free(bye);
+				return;
+			}
+		}
+		aux = aux->next;
+	}
+}
+/* This function is from the teacher's mostly, I just changed specific parts
+   so as to work with my own code */
+link deleteR(link h, char* path) {
+	if (h == NULL)
+		return h;
+	else if (strcmp(path, h->dir->path) < 0)
+		h->l = deleteR(h->l, path);
+	else if (strcmp(h->dir->path, path) < 0)
+		h->r = deleteR(h->r, path);
+	else {
+		if (h->l != NULL && h->r != NULL) {
+			link aux = max(h->l);
+			{dir3 x; x = h->dir; h->dir = aux->dir; aux->dir = x;}
+			h->l = deleteR(h->l, aux->dir->path);
+		}
+		else {
+			link aux = h;
+			if (h->l == NULL && h->r == NULL)
+				h = NULL;
+			else if (h->l == NULL)
+				h = h->r;
+			else 
+				h = h->l;
+			linked_target_delete(aux->dir->parent, aux->dir->path); 
+			clear_dir(aux->dir);
 			free(aux);
 		}
 	}
-	h=AVLbalance(h);
+	h = AVLbalance(h);
 	return h;
-}*/
+}

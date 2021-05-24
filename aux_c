@@ -1,0 +1,65 @@
+#include "header.h"
+
+/* bunch of mallocs but with memory checks */
+char* malloc_char(int length) {
+	char* address = (char*)malloc(sizeof(char)*(1+length));
+	if (address == NULL) {
+		puts("No memory");
+		terminate(1);
+		exit(0);
+	}
+	return address;
+}
+
+link malloc_link() {
+	link address = (link)malloc(sizeof(struct STnode));
+	if (address == NULL) {
+		puts("No memory");
+		terminate(1);
+		exit(0);
+	}
+	return address;
+}
+
+dir3 malloc_dir(char* path, dir3 p) {
+	dir3 address = (dir3)malloc(sizeof(struct Directory));
+	if (address == NULL) {
+		puts("No memory");
+		terminate(1);
+		exit(0);
+	}
+	address->parent = p;
+	address->path = strdup(path);
+	address->value = NULL;
+	address->first = NULL;
+	address->last = NULL;
+	address->children = NULL;
+	return address;
+}
+
+/*My own implementation of string duplicate*/
+char* strdup(char* string) {
+	char* new_str = malloc_char(strlen(string));
+	return strcpy(new_str, string);
+}
+
+/*Read next segment of a given path*/
+char* readDir(char* token) {
+	token = strtok(NULL, "/\n");
+	return token;
+}
+
+/*Insert sub-directory into linkedlist of parent directory*/
+void insert_llist(dir3 directory, dir3 sub_directory) {
+	if (directory->first == NULL) {
+		directory->first = (llnode)malloc(sizeof(struct LinkedList));
+		directory->first->dir = sub_directory;
+		directory->first->next = NULL;
+		directory->last = directory->first;
+	} else {
+		directory->last->next = (llnode)malloc(sizeof(struct LinkedList));
+		directory->last = directory->last->next;
+		directory->last->dir = sub_directory;
+		directory->last->next = NULL;
+	}
+}
